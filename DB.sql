@@ -135,7 +135,7 @@ SET boardId = 2
 WHERE id = 3;
 
 # 게시판 테이블 구조 변경 - hitCount 추가
-ALTER TABLE article ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL;
+ALTER TABLE article ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0;
 
 # reactionPoint 테이블 생성
 CREATE TABLE reactionPoint (
@@ -195,8 +195,8 @@ relId = 1,
 `point` = 1;
 
 # 게시물 테이블에 추천 관련 컬럼 추가
-ALTER TABLE article ADD COLUMN goodReactionPoint INT(10) UNSIGNED NOT NULL;
-ALTER TABLE article ADD COLUMN badReactionPoint INT(10) UNSIGNED NOT NULL;
+ALTER TABLE article ADD COLUMN goodReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE article ADD COLUMN badReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
 
 # 기존 게시물의 good,bad ReactionPoint 필드의 값을 채우기
 UPDATE article AS A
