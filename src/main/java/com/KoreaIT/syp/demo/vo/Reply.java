@@ -24,4 +24,9 @@ public class Reply {
 	// 수정 및 삭제 권한
 	private boolean actorCanDelete;
 	private boolean actorCanModify;
+	
+	
+	public String getForPrintRegDateType1() {
+		return regDate.substring(2, 16).replace(" ", "<br>");
+	}
 }

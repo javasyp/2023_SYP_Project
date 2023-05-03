@@ -180,7 +180,7 @@ public class UsrArticleController {
 		int repliesCount = replies.size();
 
 		model.addAttribute("repliesCount", repliesCount);
-		
+		model.addAttribute("replies", replies);
 		model.addAttribute("article", article);
 		model.addAttribute("actorCanMakeReaction", actorCanMakeReactionRd.isSuccess());
 		model.addAttribute("actorCanMakeReactionRd", actorCanMakeReactionRd);
