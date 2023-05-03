@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="Reply MODIFY" />
+<c:set var="pageTitle" value="REPLY MODIFY" />
 <%@ include file="../common/head.jspf"%>
 <hr />
 
@@ -31,7 +31,7 @@
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
 			<form action="../reply/doModify" method="POST" onsubmit="ReplyModify__submit(this); return false;">
-				<input type="hidden" name="id" value="${article.id }" />
+				<input type="hidden" name="id" value="${reply.id }" />
 				<table>
 					<colgroup>
 						<col width="200" />
@@ -57,6 +57,12 @@
 							</td>
 						</tr>
 						<tr>
+							<td>댓글 번호</td>
+							<td>
+								<div class="badge">${reply.id}</div>
+							</td>
+						</tr>
+						<tr>
 							<td>댓글 작성날짜</td>
 							<td>${reply.regDate }</td>
 						</tr>
@@ -71,8 +77,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>
+							<td colspan="2">
 								<button type="submit">수정</button>
 							</td>
 						</tr>
