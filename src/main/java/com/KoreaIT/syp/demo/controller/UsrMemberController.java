@@ -110,4 +110,11 @@ public class UsrMemberController {
 
 		return ResultData.newData(joinRd, "member", member);
 	}
+	
+	// 마이페이지
+	@RequestMapping("/usr/member/myPage")
+	public String showMyPage() {
+		
+		return "usr/member/myPage";
+	}
 }
