@@ -124,4 +124,18 @@ public class UsrMemberController {
 		
 		return "usr/member/checkPw";
 	}
+	
+	@RequestMapping("/usr/member/doCheckPw")
+	public String doCheckPw(String loginPw) {
+		
+		if (Ut.empty(loginPw)) {
+			return rq.jsHistoryBackOnView("비밀번호를 입력하세요.");
+		}
+		
+		if (rq.getLoginedMember().getLoginPw().equals(loginPw) == false) {
+			return rq.jsHistoryBackOnView("비밀번호가 일치하지 않습니다.");
+		}
+		
+		return "usr/member/modify";
+	}
 }

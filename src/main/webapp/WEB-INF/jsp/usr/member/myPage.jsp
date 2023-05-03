@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="MY PAGE" />
+<c:set var="pageTitle" value="MY" />
 <%@ include file="../common/head.jspf"%>
+<%@ page import="com.KoreaIT.syp.demo.util.Ut"%>
 <hr />
+
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
@@ -39,7 +41,8 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<a href="../member/checkPw">회원 정보 수정</a>
+							<a href="../member/checkPw?replaceUri=${Ut.getEncodedUri('../member/modify') }">
+								회원 정보 수정</a>
 						</td>
 					</tr>
 				</tbody>

@@ -7,6 +7,7 @@
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
 			<form action="doCheckPw" method="POST">
+			<input type="hidden" name="loginId" value="${rq.loginedMember.loginId }"/>
 				<table border="1">
 					<colgroup>
 						<col width="200" />
