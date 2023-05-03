@@ -117,4 +117,11 @@ public class UsrMemberController {
 		
 		return "usr/member/myPage";
 	}
+	
+	// 회원 정보 수정 시 비밀번호 한번 더 체크
+	@RequestMapping("/usr/member/checkPw")
+	public String showCheckPw() {
+		
+		return "usr/member/checkPw";
+	}
 }
