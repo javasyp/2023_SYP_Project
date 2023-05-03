@@ -2,11 +2,14 @@ package com.KoreaIT.syp.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.KoreaIT.syp.demo.service.ArticleService;
 import com.KoreaIT.syp.demo.service.ReplyService;
 import com.KoreaIT.syp.demo.util.Ut;
+import com.KoreaIT.syp.demo.vo.Article;
 import com.KoreaIT.syp.demo.vo.Reply;
 import com.KoreaIT.syp.demo.vo.ResultData;
 import com.KoreaIT.syp.demo.vo.Rq;
@@ -18,6 +21,8 @@ public class UsrReplyController {
 	private Rq rq;
 	@Autowired
 	private ReplyService replyService;
+	@Autowired
+	private ArticleService articleService;
 	
 	// 댓글 작성
 	@RequestMapping("/usr/reply/doWrite")
@@ -74,4 +79,29 @@ public class UsrReplyController {
 
 		return Ut.jsReplace(deleteReplyRd.getMsg(), replaceUri);
 	}
+	
+	// 댓글 수정
+	@RequestMapping("/usr/reply/modify")
+	public String showModify(Model model, int id, String replaceUri) {
+		
+		Reply reply = replyService.getForPrintReply(rq.getLoginedMemberId(), id);
+		
+		if (reply == null) {
+			return rq.jsHistoryBackOnView(Ut.f("%d번 댓글은 존재하지 않습니다!", id));
+		}
+		
+		ResultData actorCanModifyRd = replyService.actorCanModify(rq.getLoginedMemberId(), reply);
+
+		if (actorCanModifyRd.isFail()) {
+			return rq.jsHistoryBackOnView(actorCanModifyRd.getMsg());
+		}
+		
+		Article article = articleService.getArticle(reply.getRelId());
+
+		model.addAttribute("reply", reply);
+		model.addAttribute("article", article);
+		
+		return "usr/reply/modify";
+	}
+	
 }

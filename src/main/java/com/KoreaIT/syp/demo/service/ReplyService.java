@@ -77,14 +77,25 @@ public class ReplyService {
 		return ResultData.from("S-1", "삭제 가능");
 	}
 	
+	// 댓글 가져오기
 	public Reply getReply(int id) {
 		return replyRepository.getReply(id);
 	}
-
+	
+	// 댓글 삭제
 	public ResultData deleteReply(int id) {
 		replyRepository.deleteReply(id);
 		
 		return ResultData.from("S-1", Ut.f("%d번 댓글을 삭제했습니다.", id));
+	}
+	
+	// 댓글 수정 시 출력용
+	public Reply getForPrintReply(int actorId, int id) {
+		Reply reply = replyRepository.getForPrintReply(id);
+
+		controlForPrintData(actorId, reply);
+		
+		return reply;
 	}
 
 }

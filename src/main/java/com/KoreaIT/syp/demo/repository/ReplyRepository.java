@@ -36,29 +36,39 @@ public interface ReplyRepository {
 	
 	// 댓글 목록
 	@Select("""
-			SELECT R.*, M.nickname AS extra_writer
-			FROM reply AS R
-			LEFT JOIN `member` AS M
-			ON R.memberId = M.id
-			WHERE R.relTypeCode = #{relTypeCode}
-			AND R.relId = #{relId}
-			ORDER BY R.id ASC
+				SELECT R.*, M.nickname AS extra_writer
+				FROM reply AS R
+				LEFT JOIN `member` AS M
+				ON R.memberId = M.id
+				WHERE R.relTypeCode = #{relTypeCode}
+				AND R.relId = #{relId}
+				ORDER BY R.id ASC
 			""")
 	List<Reply> getForPrintReplies(int actorId, String relTypeCode, int relId);
 	
 	// 댓글 가져오기
 	@Select("""
-			SELECT R.*
-			FROM reply AS R
-			WHERE R.id = #{id}
+				SELECT R.*
+				FROM reply AS R
+				WHERE R.id = #{id}
 			""")
 	Reply getReply(int id);
 	
 	// 댓글 삭제
 	@Delete("""
-			DELETE FROM reply
-			WHERE id = #{id}
+				DELETE FROM reply
+				WHERE id = #{id}
 			""")
 	void deleteReply(int id);
+	
+	// 출력용 데이터
+	@Select("""
+				SELECT R.*, M.nickname AS extra_writer
+				FROM reply AS R
+				INNER JOIN `member` AS M
+				ON R.memberId = M.id
+				WHERE R.id = #{id}
+			""")
+	Reply getForPrintReply(int id);
 
 }

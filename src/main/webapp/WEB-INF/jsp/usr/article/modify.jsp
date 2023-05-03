@@ -4,10 +4,33 @@
 <%@ include file="../common/head.jspf"%>
 <hr />
 
+<!-- Article 폼 체크 -->
+<script type="text/javascript">
+	let ArticleModify__submitFormDone = false;
+	
+	function ArticleModify__submitForm(form) {
+		if (ArticleModify__submitFormDone) {
+			return;
+		}
+		
+		articleBody = form.body.value.trim();
+		
+		if (articleBody.length == 0) {
+			alert('내용을 입력해 주세요.');
+			form.body.focus();
+			return;
+		}
+		
+		ArticleModify__submitFormDone = true;
+		
+		form.submit();
+	}
+</script>
+
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
-			<form action="doModify" method="POST">
+			<form action="doModify" method="POST" onsubmit="ArticleModify__submitForm(this); return false;">
 				<input type="hidden" name="id" value="${article.id }"/>
 				<table border="1">
 					<colgroup>
