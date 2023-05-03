@@ -196,6 +196,8 @@
 				<col width="100" />
 				<col width="50" />
 				<col width="150" />
+				<col width="50" />
+				<col width="50" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -204,6 +206,8 @@
 					<th>작성자</th>
 					<th>추천</th>
 					<th>내용</th>
+					<th>수정</th>
+					<th>삭제</th>
 				</tr>
 			</thead>
 
@@ -217,6 +221,17 @@
 						<td>${reply.extra_writer}</td>
 						<td>${reply.goodReactionPoint}</td>
 						<td align="left">${reply.body}</td>
+						<td>
+							<c:if test="${reply.actorCanModify }">
+								<a class="btn-text-link btn btn-active btn-ghost" href="../reply/modify?id=${reply.id }">수정</a>
+							</c:if>
+						</td>
+						<td>
+						<c:if test="${reply.actorCanModify }">
+								<a class="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;"
+									href="../reply/doDelete?id=${reply.id }">삭제</a>
+							</c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
