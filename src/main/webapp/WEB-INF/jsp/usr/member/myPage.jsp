@@ -14,7 +14,6 @@
 				</colgroup>
 
 				<tbody>
-					
 					<tr>
 						<td>가입일</td>
 						<td>${rq.loginedMember.regDate }</td>
