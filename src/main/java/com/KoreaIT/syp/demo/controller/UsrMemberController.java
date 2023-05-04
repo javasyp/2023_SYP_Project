@@ -63,7 +63,7 @@ public class UsrMemberController {
 	// 로그아웃
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout() throws Exception {
+	public String doLogout(@RequestParam(defaultValue = "/") String afterLogoutUri) {
 
 		if (!rq.isLogined()) {
 			return Ut.jsHistoryBack("F-1", Ut.f("이미 로그아웃 상태입니다."));
@@ -71,7 +71,7 @@ public class UsrMemberController {
 		
 		rq.logout();
 		
-		return Ut.jsReplace(Ut.f("로그아웃 되었습니다."), "../home/main");
+		return Ut.jsReplace(Ut.f("로그아웃 되었습니다."), afterLogoutUri);
 	}
 	
 	// 회원가입

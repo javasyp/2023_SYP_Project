@@ -134,6 +134,7 @@ public class Rq {
 		print(Ut.jsReplace(msg, replaceUri));
 	}
 	
+	// 로그인 후 원래 가려고 했던 페이지로 이동
 	public String getLoginUri() {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
 	}
@@ -149,6 +150,18 @@ public class Rq {
 			return Ut.getEncodedUri(paramMap.get("afterLoginUri"));
 		}
 
+		return getEncodedCurrentUri();
+	}
+	
+	// 로그아웃 후 기존에 보고 있었던 페이지로 이동
+	public String getLogoutUri() {
+		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+	}
+
+	private String getAfterLogoutUri() {
+		
+		String requestUri = req.getRequestURI();
+		
 		return getEncodedCurrentUri();
 	}
 
