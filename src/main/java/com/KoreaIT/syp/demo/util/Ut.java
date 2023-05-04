@@ -2,6 +2,9 @@ package com.KoreaIT.syp.demo.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,7 +87,6 @@ public class Ut {
 			e.printStackTrace();
 			return currentUri;
 		}
-
 	}
 	
 	public static String getEncodedUri(String uri) {
@@ -94,7 +96,23 @@ public class Ut {
 			e.printStackTrace();
 			return uri;
 		}
+	}
+	
+	public static Map<String, String> getParamMap(HttpServletRequest req) {
+		Map<String, String> param = new HashMap<>();
+		
+		// 열거형
+		Enumeration<String> parameterNames = req.getParameterNames();
+		
+		// 다음 요소가 없을 때까지 반복
+		while (parameterNames.hasMoreElements()) {
+			String paramName = parameterNames.nextElement();		// replaceUri
+			String paramValue = req.getParameter(paramName);		// /usr/article/write
 
+			param.put(paramName, paramValue);
+		}
+
+		return param;
 	}
 
 }
