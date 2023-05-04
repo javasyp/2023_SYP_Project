@@ -180,7 +180,7 @@
 				</form>
 			</c:if>
 			<c:if test="${rq.notLogined }">
-				<a class="btn-text-link" href="/usr/member/login">로그인 후 이용하기</a>
+				<a class="btn-text-link" href="${rq.loginUri }">로그인 후 이용하기</a>
 			</c:if>
 		</div>
 	</div>
