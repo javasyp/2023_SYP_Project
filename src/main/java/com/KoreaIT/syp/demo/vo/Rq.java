@@ -123,4 +123,8 @@ public class Rq {
 	public boolean isNotLogined() {
 		return !isLogined;
 	}
+	
+	public void run() {
+		System.out.println("===========================run A");
+	}
 }
