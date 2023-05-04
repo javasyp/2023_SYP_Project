@@ -7,7 +7,7 @@
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
 			<form action="doCheckPw" method="POST">
-			<input type="hidden" name="loginId" value="${rq.loginedMember.loginId }"/>
+			<input type="hidden" name="replaceUri" value="${param.replaceUri }" />
 				<table border="1">
 					<colgroup>
 						<col width="200" />
@@ -21,7 +21,8 @@
 						<tr>
 							<td>비밀번호</td>
 							<td>
-								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off" placeholder="비밀번호를 입력해 주세요." name="loginPw" />
+								<input class="input input-bordered w-full max-w-xs" type="text" autocomplete="off"
+									placeholder="비밀번호를 입력해 주세요." name="loginPw" required/>
 							</td>
 						</tr>
 						<tr>

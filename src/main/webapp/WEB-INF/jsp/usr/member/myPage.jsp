@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="MY" />
+<c:set var="pageTitle" value="MEMBER" />
 <%@ include file="../common/head.jspf"%>
 <%@ page import="com.KoreaIT.syp.demo.util.Ut"%>
 <hr />

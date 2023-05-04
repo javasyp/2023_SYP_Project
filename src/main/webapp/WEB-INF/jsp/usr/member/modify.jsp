@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="MODIFY MY" />
+<c:set var="pageTitle" value="MEMBER MODIFY" />
 <%@ include file="../common/head.jspf"%>
 <hr />
 
@@ -103,7 +103,7 @@
 							<td>
 								<input class="input input-bordered w-full max-w-xs" type="text" name="name"
 									value="${rq.loginedMember.name }"
-									placeholder="새 비밀번호 확인을 입력해 주세요." />
+									placeholder="이름을 입력해 주세요." />
 							</td>
 						</tr>
 						<tr>
