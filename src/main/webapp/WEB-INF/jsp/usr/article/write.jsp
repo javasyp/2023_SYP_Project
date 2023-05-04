@@ -2,12 +2,49 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="ARTICLE WRITE" />
 <%@ include file="../common/head.jspf"%>
+<%@ include file="../common/toastUiEditorLib.jspf"%>
 <hr />
+<!-- Article Write 폼 체크 -->
+<script type="text/javascript">
+	let ArticleWrite__submitFormDone = false;
+	
+	function ArticleWrite__submit(form) {
+		if (ArticleWrite__submitFormDone) {
+			return;
+		}
+		
+		articleTitle = form.title.value.trim();
+		
+		if (articleTitle.length == 0) {
+			alert('제목을 입력해 주세요.');
+			form.title.focus();
+			return;
+		}
+		
+		// 토스트UI에디터 추가
+		const editor = $(form).find('.toast-ui-editor').data(
+						'data-toast-editor');
+		const markdown = editor.getMarkdown().trim();
+		
+		if (markdown.length == 0) {
+			alert('내용을 입력해 주세요.');
+			editor.focus();
+			return;
+		}
+		
+		form.body.value = markdown;
+		
+		ArticleWrite__submitFormDone = true;
+		
+		form.submit();
+	}
+</script>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
-			<form action="doWrite" method="POST">
+			<form action="doWrite" method="POST" onsubmit="ArticleWrite__submit(this); return false;">
+				<input type="hidden" name="body">
 				<table border="1">
 					<colgroup>
 						<col width="200" />
@@ -34,7 +71,13 @@
 						</tr>
 						<tr>
 							<td>내용</td>
-							<td><textarea class="input input-bordered w-full max-w-xs" autocomplete="off" placeholder="내용을 입력해 주세요." name="body"></textarea>
+							<td>
+								<!-- <textarea class="input input-bordered w-full max-w-xs" autocomplete="off" placeholder="내용을 입력해 주세요." name="body"></textarea> -->
+								<div class="toast-ui-editor">
+									<script type="text/x-template">
+     								</script>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
