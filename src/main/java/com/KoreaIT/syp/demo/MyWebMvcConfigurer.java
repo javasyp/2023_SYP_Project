@@ -2,6 +2,8 @@ package com.KoreaIT.syp.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -70,4 +72,13 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/member/findLoginPw");
 		ir.addPathPatterns("/usr/member/doFindLoginPw");
 	}
+	
+	@Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+        	.allowedOrigins("http://localhost:8082", "http://localhost:8082/usr/bus/map") // 허용할 출처
+            .allowedMethods("GET", "POST") // 허용할 HTTP method
+            .allowCredentials(true) // 쿠키 인증 요청 허용
+            .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
+    }
 }

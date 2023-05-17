@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.KoreaIT.syp.demo.service.MemberService;
 import com.KoreaIT.syp.demo.util.Ut;
-import com.KoreaIT.syp.demo.vo.Article;
 import com.KoreaIT.syp.demo.vo.Member;
 import com.KoreaIT.syp.demo.vo.ResultData;
 import com.KoreaIT.syp.demo.vo.Rq;
