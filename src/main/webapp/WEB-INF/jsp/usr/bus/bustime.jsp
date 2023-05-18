@@ -5,31 +5,6 @@
 <%@ include file="../common/head.jspf"%>
 
 <hr />
-<script>
-//테이블 요소 찾기
-const table = document.getElementById("your-table-id");
-
-// 데이터 배열을 순회하면서 각 행을 생성
-data.forEach((rowData, index) => {
-  // tr 요소 생성
-  const row = document.createElement("tr");
-
-  // 첫 번째 열(td) 생성
-  const firstCell = document.createElement("td");
-  firstCell.textContent = index + 1;
-  row.appendChild(firstCell);
-
-  // 데이터 배열의 요소를 순회하면서 나머지 열(td) 생성
-  rowData.forEach((cellData) => {
-    const cell = document.createElement("td");
-    cell.textContent = cellData;
-    row.appendChild(cell);
-  });
-
-  // 테이블에 행 추가
-  table.appendChild(row);
-});
-</script>
 
 <select name="" id="">
 	<option value="1">급행1번</option>
@@ -556,34 +531,6 @@ data.forEach((rowData, index) => {
 		<td> ${data[23][20]} </td>
 		<td> <!-- ${sheetName}  --></td>
 	</tr>
-	
-	<tr>
-		<!-- <td> ${data} </td> -->
-		<c:foreach>
-		</c:foreach>
-		<td> ${data[23][0]} </td>
-		<td> ${data[23][1]} </td>
-		<td> ${data[23][2]} </td>
-		<td> ${data[23][3]} </td>
-		<td> ${data[23][4]} </td>
-		<td> ${data[23][5]} </td>
-		<td> ${data[23][6]} </td>
-		<td> ${data[23][7]} </td>
-		<td> ${data[23][8]} </td>
-		<td> ${data[23][9]} </td>
-		<td> ${data[23][10]} </td>
-		<td> ${data[23][11]} </td>
-		<td> ${data[23][12]} </td>
-		<td> ${data[23][13]} </td>
-		<td> ${data[23][14]} </td>
-		<td> ${data[23][15]} </td>
-		<td> ${data[23][16]} </td>
-		<td> ${data[23][17]} </td>
-		<td> ${data[23][18]} </td>
-		<td> ${data[23][19]} </td>
-		<td> ${data[23][20]} </td>
-		<td> <!-- ${sheetName}  --></td>
-	</tr>
 </table>
 	
 <table>
@@ -593,7 +540,7 @@ data.forEach((rowData, index) => {
 	 		int pageCount = (40 + pageSize - 1) / pageSize; // 전체 페이지 수
 		  	%>
   			<c:forEach var="data" items="${data }">
-  				<!-- ${data } <br>-->
+  				<!-- ${data } <br> -->
   			</c:forEach>
 		</tr>
 	</c:forEach>

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -12,15 +11,22 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.jcp.xml.dsig.internal.dom.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.KoreaIT.syp.demo.service.BustimeService;
+import com.KoreaIT.syp.demo.vo.Bustime;
+import com.KoreaIT.syp.demo.vo.Rq;
 
 @Controller
 public class UsrBustimeController {
+	@Autowired
+	private BustimeService bustimeService;
+	@Autowired
+	private Rq rq;
 	
 	@RequestMapping("/usr/bus/map")
 	public String showMap() {
@@ -72,8 +78,6 @@ public class UsrBustimeController {
     			// 셀 개수
     			int cellCount = row.getPhysicalNumberOfCells();
     			
-    			System.out.print("|	" + x + " |");
-    			
     			for (int y = 0 ; y < cellCount; y++) {
     				cell = row.getCell(y);
     				String cellValue = dataFormatter.formatCellValue(cell);
@@ -101,6 +105,7 @@ public class UsrBustimeController {
         // 모델에 데이터 전달
         model.addAttribute("sheetNum", sheetNum);
         model.addAttribute("sheetName", sheetName);
+        model.addAttribute("sheet", sheet);
         model.addAttribute("data", data);
         model.addAttribute("dataSize", data.size());
         
@@ -108,8 +113,62 @@ public class UsrBustimeController {
         return "usr/bus/bustime";
 	}
 	
-	@RequestMapping("/usr/bus/bustime2")
-	public String showBusTime2()  {
-		return "";
+	// 목록
+	@RequestMapping("/usr/bus/list")
+	public String showBusList(Model model, @RequestParam(defaultValue="1") int page,
+			@RequestParam(defaultValue="busRoute,dayType") String searchType,
+			@RequestParam(defaultValue="") String searchKeyword) {
+		
+		int bustimesCount = bustimeService.getBustimesCount(searchType, searchKeyword);
+		
+		// 페이징
+		
+		int itemsInAPage = 10;		// 한 페이지에 나오는 글 개수
+		// 글 20개 -> 2
+		// 글 24개 -> 3
+
+		int pagesCount = (int) Math.ceil(bustimesCount / (double) itemsInAPage);
+
+		List<Bustime> bustimes = bustimeService.getForPrintBustimes(itemsInAPage, page, searchType, searchKeyword);
+		
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("page", page);
+		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("bustimesCount", bustimesCount);
+		model.addAttribute("bustimes", bustimes);
+		
+		return "usr/bus/list";
+	}
+		
+	// 상세보기
+	@RequestMapping("/usr/bus/detail")
+	public String showBusDetail(Model model, String busRoute, String dayType) {
+		
+		List<Bustime> bustime = bustimeService.getForPrintBustime(busRoute, dayType);
+		
+		// 추천 여부 확인
+//		ResultData actorCanMakeReactionRd = reactionPointService.actorCanMakeReaction(rq.getLoginedMemberId(), "article",
+//				id);
+		
+		model.addAttribute("bustime", bustime);
+//		model.addAttribute("actorCanMakeReaction", actorCanMakeReactionRd.isSuccess());
+//		model.addAttribute("actorCanMakeReactionRd", actorCanMakeReactionRd);
+		
+		// 추천 불가 시
+//		if (actorCanMakeReactionRd.getResultCode().equals("F-2")) {
+//			// 로그인 된 회원 번호의 추천 point 가져옴
+//			int sumReactionPointByMemberId = (int) actorCanMakeReactionRd.getData1();
+//			
+//			if (sumReactionPointByMemberId > 0) {
+//				// 로그인 한 회원이 "좋아요"를 이미 누른 상태라면 "좋아요 취소" 보여주기
+//				model.addAttribute("actorCanCancelGoodReaction", true);
+//			} else {
+//				// 로그인 한 회원이 "싫어요"를 이미 누른 상태라면 "싫어요 취소" 보여주기
+//				model.addAttribute("actorCanCancelBadReaction", true);
+//			}
+//		}
+		
+		return "usr/bus/detail";
 	}
 }
