@@ -312,10 +312,9 @@ function clearSearch() {
             </table>
             
             <c:if test="${empty bustimes}">
-            <div class="box">
-            	검색 결과가 존재하지 않습니다.
-            </div>
-			
+	            <div class="box">
+	            	검색 결과가 존재하지 않습니다.
+	            </div>
 			</c:if>
             
 			<!-- 변수 지정 -->

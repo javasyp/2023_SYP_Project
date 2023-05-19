@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.KoreaIT.syp.demo.service.BustimeService;
+import com.KoreaIT.syp.demo.util.Ut;
 import com.KoreaIT.syp.demo.vo.Bustime;
 import com.KoreaIT.syp.demo.vo.Rq;
 
@@ -135,7 +136,7 @@ public class UsrBustimeController {
 		
 		// 현재 페이지가 범위를 벗어나지 않도록 처리
 	    if (page < 1) {
-	        page = 1;
+	    	return rq.jsHistoryBackOnView(Ut.f("%d번 페이지는 존재하지 않습니다.", page));
 	    } else if (page > pagesCount) {
 	        page = pagesCount;
 	    }
