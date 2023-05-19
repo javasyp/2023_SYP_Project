@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="버스 시간표 상세" />
 <%@ include file="../common/head.jspf"%>
-<hr />
 
 <section class="mt-8">
 	<div class="">

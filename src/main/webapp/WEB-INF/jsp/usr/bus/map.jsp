@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="MAP" />
 <%@ include file="../common/head.jspf"%>
-<hr />
 
 <!-- 실제 지도를 그리는 Javascript API 및 API KEY -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d23dfbb54da6b8556eb211bbec3d38fb"></script>

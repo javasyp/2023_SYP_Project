@@ -1,24 +1,29 @@
 /* 폰트 적용 */
 @font-face {
-    font-family: 'GangwonEduPowerExtraBoldA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-family: 'AppleSDGothicNeoB';
+    src: url('AppleSDGothicNeoB.ttf');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-     font-family: 'S-CoreDream-3Light';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+     font-family: 'AppleSDGothicNeoR';
+     src: url('AppleSDGothicNeoR.ttf');
      font-weight: normal;
      font-style: normal;
 }
 
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
 header {
-	font-family: 'GangwonEduPowerExtraBoldA', sans;
+	font-family: 'AppleSDGothicNeoB', sans;
 }
 
 html > body {
-	font-family: 'S-CoreDream-3Light', sans;
+	font-family: 'AppleSDGothicNeoR', sans;
 }
 
 /* 커스텀 */

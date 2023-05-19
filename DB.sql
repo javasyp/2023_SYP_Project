@@ -11,7 +11,7 @@ CREATE TABLE busSchedule(
     departure2 CHAR(20) COMMENT '출발지2',
     dayType CHAR(10) COMMENT '운행일',
     company CHAR(30) COMMENT '운행사',
-    `interval` INT(10) COMMENT '평균배차간격',
+    `interval` CHAR(10) COMMENT '평균배차간격',
     oneWay CHAR(10) COMMENT '편도',
     serviceDate CHAR(50) COMMENT '시행일',
     line CHAR(10) COMMENT '구분',

@@ -22,23 +22,20 @@ public class BustimeService {
 		this.bustimeRepository = bustimeRepository;
 	}
 	
-	// 목록 (출력용)
+	// 버스 시간표 목록
 	public List<Bustime> getForPrintBustimes(int itemsInAPage, int page, String searchType, String searchKeyword) {
-		/*
-		 * SELECT * FROM article WHERE boardId = 1 ORDER BY id DESC LIMIT 0, 10
-		 */
 		int limitFrom = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 		
 		return bustimeRepository.getForPrintBustimes(limitFrom, limitTake, searchType, searchKeyword);
 	}
 	
-	// 게시물 개수
+	// 버스 시간표 개수
 	public int getBustimesCount(String searchType, String searchKeyword) {
 		return bustimeRepository.getBustimesCount(searchType, searchKeyword);
 	}
 	
-	// 상세보기 (출력용), 권한 체크
+	// 버스 시간표 상세보기 (권한 체크)
 	public List<Bustime> getForPrintBustime(String busRoute, String dayType) {
 		List<Bustime> bustime = bustimeRepository.getForPrintBustime(busRoute, dayType);
 

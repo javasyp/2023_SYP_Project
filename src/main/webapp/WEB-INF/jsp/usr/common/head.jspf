@@ -7,61 +7,536 @@
 <title>${pageTitle }</title>
 
 <!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-<!-- 테일윈드 불러오기 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 
 <!-- 폰트어썸 불러오기 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
 <link rel="stylesheet" href="/resource/common.css" />
 <link rel="shortcut icon" href="/resource/favicon.ico" />
 <script src="/resource/common.js" defer="defer"></script>
 
-<link rel="stylesheet" href="/resource/sidebar.scss" />
-<script type="text/javascript" src="/resource/sidebar.js"></script>
+<style>
+:root {
+  --bc: #14121c;
+  --bc-gray: #0e0d10;
+  --white: #ffffff;
+	--black: #000000;
+	--dark-blue: #1f2029;
+  --extra-dark-blue: #13141a;
+	--dark-light: #424455;
+	--red: #da2c4d;
+  --dark-red: #6e1727;
+	--yellow: #f8ab37;
+	--grey: #ecedf3;
+	--blue: #007bff;
+	--indigo: #6610f2;
+	--purple: #6f42c1;
+	--pink: #e83e8c;
+	--orange: #fd7e14;
+	--green: #28a745;
+  --light-green: #24e33a;
+	--teal: #20c997;
+	--cyan: #17a2b8;
+	--gray: #6c757d;
+	--gray-dark: #343a40;
+	--primary: #f9c6cf;
+	--secondary: #6c757d;
+	--success: #28a745;
+	--info: #17a2b8;
+	--warning: #ffc107;
+	--danger: #dc3545;
+	--light: #f8f9fa;
+  --light-gray: #ebecf2;
+	--dark: #343a40;
+	--font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	--font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+* {
+	box-sizing: border-box;
+}
+html, body {
+	margin: 0;
+  width: 100%;
+  min-height: 100vh;
+	overflow-x: hidden;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+}
+nav {
+  top: 0;
+  max-height: 15vh;
+  position: absolute;
+  z-index: 130;
+}
+header {
+  position: relative;
+  height: 100vh;
+}
+main {
+  position: relative;
+  min-height: 100vh;
+  background-color: #1e1e1e;
+  z-index: 10;
+}
+#navbar {
+  heihgt: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar-left {
+  width: 10vw;
+  display: inline-block;
+}
+.navbar-button {
+  position: fixed;
+  top: 0;
+  margin: 0;
+  width: 10%;
+  height: 15vh;
+  border: none;
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--black);
+  border-bottom-right-radius: 25px;
+  cursor: pointer;
+  transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+}
+.navbar-button:hover {
+  border-bottom-right-radius: 50px;
+}
+.navbar-button:focus {
+  outline: none;
+}
+.navbar-right {
+  height: 15vh;
+  width: calc(100% - 10vw);
+  display: inline-block;
+}
+#nav-icon3 {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    display: block;
+    margin: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+    z-index: 135;
+}
+#nav-icon3 span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: white;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
+}
+#nav-icon3 span:nth-child(1) {
+    top: 0;
+}
+#nav-icon3 span:nth-child(2),#nav-icon3 span:nth-child(3) {
+    top: 10px;
+}
+#nav-icon3 span:nth-child(4) {
+    top: 20px;
+}
+#nav-icon3.open span:nth-child(1) {
+    top: 18px;
+    width: 0;
+    left: 50%;
+}
+#nav-icon3.open span:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+#nav-icon3.open span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+#nav-icon3.open span:nth-child(4) {
+    top: 18px;
+    width: 0;
+    left: 50%;
+}
+/* 메뉴 */
+.menu {
+  top: 0;
+  display: none;
+  position: fixed;
+  overflow: hidden;
+  width: 25%;
+  height: 100%;
+  z-index: 125;
+}
+.menu-bc {
+  position: absolute;
+  background-color: var(--warning);
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  
+}
+.menu-items {
+  position: relative;
+  list-style-type: none;
+  margin: 18vh 3em 0 3em;
+  padding: 0;
+  opacity: 0;
+  z-index: 275;
+  white-space: nowrap;
+}
+.menu-item-wrapper {
+  padding: 0;
+  margin: 1em;
+  color: white;
+  font-size: 150%;
+  cursor: pointer;
+  transition: color .2s ease-in-out;
+}
+.menu-item-wrapper:hover {
+  color: black;
+}
+.menu-item-wrapper i {
+  margin: 0 .75em 0 0;
+}
+.menu-item {
+}
+/* HEADER */
+.header-left {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  height: 100%;
+  z-index: 50;
+}
+.header-row {
+  width: 10vw;
+  height: 100%;
+  display: inline-block;
+}
+.header-row-center {
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header-row-title {
+  margin: 10vh 0 0 0;
+  color: var(--white);
+  font-size: 95%;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: .5em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.header-row-bottom {
+  height: 30%;
+}
+.button-down {
+  width: 100%;
+  height: 100%;
+  color: var(--white);
+  background-image: linear-gradient(to top, #1e1e1e, transparent);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+.button-down:hover {
+  color: var(--light-gray);
+}
+.button-down:focus {
+  outline: none;
+}
+.header-right {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.header-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/resource/bus.jpg');
+}
+.header-img-overlay {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, .4);
+}
+.header-title-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header-title-wrapper h1 {
+  font-size: 750%;
+  color: var(--white);
+  text-transform: uppercase;
+  z-index: 10;
+}
+/* Player Button */
+.player-button-wrapper {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+}
+.circle {
+  stroke: var(--light-gray);
+  stroke-dasharray: 650;
+  stroke-dashoffset: 650;
+  -webkit-transition: all .5s ease-in-out;
+  opacity: 0.3;
+}
+.play-but {
+  transform: scale(.5, .5);
+  display: inline-block;
+  -webkit-transition: all .5s ease;
+}
+.play-but .triangle {
+  -webkit-transition: all .7s ease-in-out;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 480;
+  stroke: var(--white);
+  transform: translateY(0) 
+}
+.play-but:hover .triangle {
+  stroke-dashoffset: 0;
+	opacity: 1;
+	stroke: var(--gray);
+	animation: nudge .7s ease-in-out;
+}
+.play-but:hover .circle {
+	stroke-dashoffset: 0;
+	opacity: 1;
+}
+/* Video Modal */
+.video-modal-wrapper {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 150;
+  background-color: rgba(0, 0, 0, .75);
+}
+.video-modal {
+  width: 75%;
+  height: 75%;
+}
+/* 드래그 */
+/*
+::selection {
+  color: var(--white);
+  background: var(--warning);
+}
+*/
+/* 스크롤바 */
+::-webkit-scrollbar-track {
+      background-color: #F5F5F5;
+}
+::-webkit-scrollbar {
+      width: 12px;
+      background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+      background-color: var(--light-gray);
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade2 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadein {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, .5);
+  }
+}
+@keyframes fadeout {
+  0% {
+    background-color: rgba(0, 0, 0, .5);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+@keyframes menu {
+  0% {
+    width: 0;
+    height: 0;
+    top: 0;
+    left: 0;
+  }
+  100% {
+    width: 250%;
+    height: 130%;
+    top: -10%;
+    left: -50%;
+  }
+}
+@keyframes menu2 {
+  0% {
+    width: 250%;
+    height: 130%;
+    top: -10%;
+    left: -50%;
+  }
+  100% {
+    width: 0;
+    height: 0;
+    top: 0;
+    left: 0;
+  }
+}
+@keyframes menu-items {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes menu-items2 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>
+<script>
+var delayInShortMilliseconds = 350;
+var delayInMilliseconds = 500;
+
+$(document).on('click', '.navbar-button', function() {
+  
+  if($("#nav-icon3").hasClass('open')) {
+    $('#nav-icon3').toggleClass('open');
+    $('.menu-bc').css('animation', 'menu2 .35s ease-in-out forwards');
+    $('.menu-items').css('animation', 'menu-items2 .25s ease-in-out forwards');
+    setTimeout(function() {
+      $('.menu').css('display', 'none');
+    }, delayInShortMilliseconds);
+  } else {
+    $('#nav-icon3').toggleClass('open');
+    $('.menu-bc').css('animation', 'menu .35s ease-in-out forwards');
+    $('.menu').css('display', 'block');
+    $('.menu-items').css('animation', 'menu-items .25s .2s ease-in-out forwards');
+  }
+  
+});
+
+$(document).ready(function() {
+$(".button-down").click(function() {
+     $('html, body').animate({
+         scrollTop: $(".scroll1").offset().top + (0)
+     }, 750);
+ });
+});
+
+$('.play-but').click(function(){
+  
+  $('.video-modal-wrapper').css("display", "flex");
+  $(".video-modal-wrapper").css("animation", "fadein .3s ease-in-out forwards");
+  $(".video-modal").css("animation", "fade .3s ease-in-out forwards");
+  
+  setTimeout(function() {
+      $(".video-modal-wrapper").css("", "");
+    }, delayInMilliseconds);
+});
+
+$('.video-modal-wrapper').click(function(){
+  $('.video-modal-wrapper').css("animation", "fadeout .3s ease-in-out forwards");
+  $('.video-modal').css("animation", "fade2 .3s ease-in-out forwards");
+  
+  setTimeout(function() {
+      $('.video-modal-wrapper').css("display", "none");
+    }, delayInMilliseconds);
+});
+</script>
 </head>
 <body>
-	
-	<header>
-
-		<div class=" h-20 flex container mx-auto text-3xl">
-			<a href="#" class=" flex items-center px-3">
-				<span>지도 서비스</span>
-			</a>
-			
-			<div class="flex-grow"></div>
-			
-			<ul class="flex">
-				<li class="hover:underline">
-					<a class="h-full px-3 flex items-center" href="/">
-							<span>HOME</span>
-					</a>
-				</li>
-				<li class="hover:underline">
-					<a class="h-full px-3 flex items-center" href="/usr/bus/map">
-							<span>지도</span>
-					</a>
-				</li>
-				<li class="hover:underline">
-					<a class="h-full px-3 flex items-center" href="/usr/bus/bustime">
-							<span>버스 시간표</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-		
-	</header>
-	
-	<section class="my-3 text-2xl">
-		<div class="container mx-auto px-3">
-				<h1>${pageTitle }&nbsp;PAGE</h1>
-		</div>
-	</section>
-	
-	
-	
-
-	
-	<main>
+<nav id="navbar">
+  <div class="navbar-left">
+    <button id="navbar-btn" class="navbar-button">
+        <div id="nav-icon3">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+  </div>
+  <div class="navbar-right">
+  </div>
+</nav>
+<div class="menu">
+  <ul class="menu-items">
+    <li class="menu-item-wrapper">
+    	<i class="fa-solid fa-house"></i><a class="menu-item" href="/">HOME</a>
+    </li>
+    <li class="menu-item-wrapper">
+    	<i class="fa-solid fa-calendar-days"></i><a class="menu-item" href="/usr/bus/list">BUS TIMETABLE</a>
+    </li>
+    <li class="menu-item-wrapper">
+    	<i class="fa-solid fa-map-location-dot"></i><a class="menu-item" href="/usr/bus/map">MAP</a>
+    </li>
+  </ul>
+  <div class="menu-bc"></div>
+</div>

@@ -37,7 +37,7 @@ public interface BustimeRepository {
 			""")
 	public List<Bustime> getForPrintBustimes(int limitFrom, int limitTake, String searchType, String searchKeyword);
 	
-	// 게시물 개수
+	// 시간표 개수
 	@Select("""
 			<script>
 				SELECT COUNT(*) AS cnt
@@ -72,7 +72,6 @@ public interface BustimeRepository {
 			""")
 	public List<Bustime> getForPrintBustime(String busRoute, String dayType);
 
-	
 //	// 조회수 증가
 //	@Update("""
 //			<script>

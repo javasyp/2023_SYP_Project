@@ -113,24 +113,34 @@ public class UsrBustimeController {
         return "usr/bus/bustime";
 	}
 	
-	// 목록
+	// 버스 시간표 목록
 	@RequestMapping("/usr/bus/list")
 	public String showBusList(Model model, @RequestParam(defaultValue="1") int page,
 			@RequestParam(defaultValue="busRoute,dayType") String searchType,
 			@RequestParam(defaultValue="") String searchKeyword) {
 		
+		// 시간표 총 개수
 		int bustimesCount = bustimeService.getBustimesCount(searchType, searchKeyword);
 		
 		// 페이징
+		int itemsInAPage = 15;		// 한 페이지에 나오는 글 개수
+		// 글 40개 -> 2
+		// 글 44개 -> 3
 		
-		int itemsInAPage = 10;		// 한 페이지에 나오는 글 개수
-		// 글 20개 -> 2
-		// 글 24개 -> 3
-
-		int pagesCount = (int) Math.ceil(bustimesCount / (double) itemsInAPage);
-
+		// 전체 페이지수
+		int pagesCount = (int) Math.ceil( bustimesCount / (double) itemsInAPage);
+		
+		// 리스트로 저장
 		List<Bustime> bustimes = bustimeService.getForPrintBustimes(itemsInAPage, page, searchType, searchKeyword);
 		
+		// 현재 페이지가 범위를 벗어나지 않도록 처리
+	    if (page < 1) {
+	        page = 1;
+	    } else if (page > pagesCount) {
+	        page = pagesCount;
+	    }
+		
+		// usr/bus/list.jsp로 값 전달
 		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("page", page);
@@ -141,16 +151,18 @@ public class UsrBustimeController {
 		return "usr/bus/list";
 	}
 		
-	// 상세보기
+	// 버스 시간표 상세보기
 	@RequestMapping("/usr/bus/detail")
 	public String showBusDetail(Model model, String busRoute, String dayType) {
 		
+		// 해당 버스 노선번호와 운행일로 값 저장 (결과가 여러개이기 때문에 list로 받아옴)
 		List<Bustime> bustime = bustimeService.getForPrintBustime(busRoute, dayType);
 		
 		// 추천 여부 확인
 //		ResultData actorCanMakeReactionRd = reactionPointService.actorCanMakeReaction(rq.getLoginedMemberId(), "article",
 //				id);
 		
+		// usr/bus/detail.jsp로 값 전달
 		model.addAttribute("bustime", bustime);
 //		model.addAttribute("actorCanMakeReaction", actorCanMakeReactionRd.isSuccess());
 //		model.addAttribute("actorCanMakeReactionRd", actorCanMakeReactionRd);
