@@ -19,6 +19,7 @@
   <div class="page-title">
         <div class="container">
 			<h3>지도</h3>
+			<div class="flex justify-center">현재 위치를 기반으로 반경 500m 이내에 있는 정류소 정보를 조회합니다.</div>
         </div>
     </div>
 </section>
