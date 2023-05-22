@@ -2,13 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="버스 시간표" />
 <%@ include file="../common/head.jspf"%>
-<!-- 테일윈드 불러오기 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+
 <style>
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 section.notice {
   padding: 80px 0;
 }
@@ -16,6 +16,7 @@ section.notice {
 .page-title {
   margin-bottom: 30px;
 }
+
 .page-title h3 {
   font-size: 28px;
   color: #333333;
@@ -36,6 +37,7 @@ section.notice {
   display: flex;
   justify-content: center;
 }
+
 #board-search .search-window .search-wrap select {
   outline: 0;
   height: 40px;
@@ -44,11 +46,13 @@ section.notice {
   border: 1px solid #ccc;
   font-family: 'AppleSDGothicNeoR', sans;
 }
+
 #board-search .search-window .search-wrap select:focus {
   border-color: #333;
   outline: 0;
   border-width: 1px;
 }
+
 #board-search .search-window .search-wrap input {
   height: 40px;
   width: 100%;
@@ -89,12 +93,15 @@ section.notice {
   word-break: break-all;
   vertical-align: middle;
 }
+
 .board-table a:hover {
   text-decoration: underline;
 }
+
 .board-table th {
   text-align: center;
 }
+
 .board-table th, .board-table td {
   padding: 14px 0;
 }
@@ -111,7 +118,7 @@ section.notice {
   text-align: left;
 }
 
-.board-table tbody th p{
+.board-table tbody th p {
   display: none;
 }
 
@@ -141,17 +148,6 @@ section.notice {
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
-}
-
-.btn-dark {
-  background: #555;
-  color: #fff;
-}
-
-.btn-dark:hover, .btn-dark:focus {
-  background: #373737;
-  border-color: #373737;
-  color: #fff;
 }
 
 .btn-dark {
@@ -234,12 +230,14 @@ section.notice {
 	border:1px solid #42454c;
 }
 </style>
+
 <script>
 function clearSearch() {
     document.querySelector('input[name="searchKeyword"]').value = '';
     document.querySelector('form').submit();
 }
 </script>
+
 <section class="notice">
   <div class="page-title">
         <div class="container">
@@ -247,7 +245,7 @@ function clearSearch() {
         </div>
     </div>
 
-    <!-- board seach area -->
+    <!-- board search area -->
     <div id="board-search">
         <div class="container">
             <div class="search-window">
@@ -260,8 +258,7 @@ function clearSearch() {
 						</select>
 						<input value="${param.searchKeyword }" maxlength="20" name="searchKeyword"
 							type="text" placeholder="검색어를 입력하세요">
-						<button type="submit" class="btn btn-dark">검색</button>
-						<button type="submit" class="btn btn-dark" onclick="clearSearch()">전체</button>
+						<button type="submit" class="btn btn-dark">🔍︎</button>
                     </div>
                 </form>
             </div>

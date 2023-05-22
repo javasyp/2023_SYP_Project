@@ -61,7 +61,7 @@ public interface BustimeRepository {
 			""")
 	public int getBustimesCount(String searchType, String searchKeyword);
 	
-	// 상세보기
+	// 상세보기 (시간표만)
 	@Select("""
 			<script>
 				SELECT *
@@ -71,6 +71,18 @@ public interface BustimeRepository {
 			</script>
 			""")
 	public List<Bustime> getForPrintBustime(String busRoute, String dayType);
+	
+	// 상세보기 (노선정보만)
+	@Select("""
+			<script>
+				SELECT *
+				FROM busSchedule
+				WHERE line = ''
+				AND busRoute = #{busRoute}
+				AND dayType = #{dayType}
+			</script>
+			""")
+	public Bustime getForPrintBus(String busRoute, String dayType);
 
 //	// 조회수 증가
 //	@Update("""

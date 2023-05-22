@@ -35,7 +35,7 @@ public class BustimeService {
 		return bustimeRepository.getBustimesCount(searchType, searchKeyword);
 	}
 	
-	// 버스 시간표 상세보기 (권한 체크)
+	// 버스 시간표 상세보기 (시간표만) (권한 체크)
 	public List<Bustime> getForPrintBustime(String busRoute, String dayType) {
 		List<Bustime> bustime = bustimeRepository.getForPrintBustime(busRoute, dayType);
 
@@ -43,7 +43,14 @@ public class BustimeService {
 
 		return bustime;
 	}
-//	
+	
+	// 버스 시간표 상세보기 (노선 정보만)
+	public Bustime getForPrintBus(String busRoute, String dayType) {
+		Bustime bus = bustimeRepository.getForPrintBus(busRoute, dayType);
+		
+		return bus;
+	}
+	
 //	// 게시물 조회수 증가시키기
 //	public ResultData increaseHitCount(int id) {
 //		int affectedRow = bustimeRepository.increaseHitCount(id);
@@ -59,4 +66,6 @@ public class BustimeService {
 //	public int getArticleHitCount(int id) {
 //		return bustimeRepository.getBustimeHitCount(id);
 //	}
+
+	
 }

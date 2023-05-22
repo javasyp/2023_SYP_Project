@@ -1,9 +1,15 @@
 package com.KoreaIT.syp.demo.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -30,7 +36,47 @@ public class UsrBustimeController {
 	private Rq rq;
 	
 	@RequestMapping("/usr/bus/map")
-	public String showMap() {
+	public String showMap(Locale locale, Model model) throws IOException {
+//		StringBuilder urlBuilder = new StringBuilder("http://ws.bus.go.kr/api/rest/buspos/getLowBusPosByRtid");
+//
+//		urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=API키");
+//
+//		urlBuilder.append("&" + URLEncoder.encode("busRouteId","UTF-8") + "=" + URLEncoder.encode("100100118", "UTF-8")); 
+//
+//		URL url = new URL(urlBuilder.toString());
+//
+//		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//
+//		conn.setRequestMethod("GET");
+//
+//		conn.setRequestProperty("Content-type", "application/xml;charset=UTF-8");
+//		BufferedReader rd;
+//
+//		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+//
+//			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//
+//		} else {
+//
+//			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+//
+//		}
+//
+//		StringBuilder sb = new StringBuilder();
+//
+//		String line;
+//
+//		while ((line = rd.readLine()) != null) {
+//
+//			sb.append(line);
+//
+//		}
+//
+//		rd.close();
+//
+//		conn.disconnect();
+//		sb.toString();
+//		
 		return "usr/bus/map";
 	}
 	
@@ -156,8 +202,11 @@ public class UsrBustimeController {
 	@RequestMapping("/usr/bus/detail")
 	public String showBusDetail(Model model, String busRoute, String dayType) {
 		
-		// 해당 버스 노선번호와 운행일로 값 저장 (결과가 여러개이기 때문에 list로 받아옴)
+		// 해당 버스의 시간표 값 가져오기 (결과가 여러개이기 때문에 list로 받아옴)
 		List<Bustime> bustime = bustimeService.getForPrintBustime(busRoute, dayType);
+		
+		// 해당 버스의 시간표를 제외한 값 가져오기
+		Bustime bus = bustimeService.getForPrintBus(busRoute, dayType);
 		
 		// 추천 여부 확인
 //		ResultData actorCanMakeReactionRd = reactionPointService.actorCanMakeReaction(rq.getLoginedMemberId(), "article",
@@ -165,6 +214,7 @@ public class UsrBustimeController {
 		
 		// usr/bus/detail.jsp로 값 전달
 		model.addAttribute("bustime", bustime);
+		model.addAttribute("bus", bus);
 //		model.addAttribute("actorCanMakeReaction", actorCanMakeReactionRd.isSuccess());
 //		model.addAttribute("actorCanMakeReactionRd", actorCanMakeReactionRd);
 		
