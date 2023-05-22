@@ -35,7 +35,7 @@
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
     		center: new kakao.maps.LatLng(36.3504119, 127.3845475), // 지도의 중심좌표 (대전시청)
-    		level: 2 // 지도의 확대 레벨 
+    		level: 1 // 지도의 확대 레벨 
 		};
 	
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
