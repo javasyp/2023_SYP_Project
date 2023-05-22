@@ -7,27 +7,36 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.red {
+	border: 1px solid red;
+}
+
+.container {
+	margin: 0 auto;
+	width: 1050px;
+}
+
 </style>
 
-<section class="notice">
-  <div class="page-title">
-        <div class="container">
-			<h3>${bus.busRoute }</h3>
-			${bus.departure1 } ~ ${bus.departure2 }
-			
-			${bus.dayType }
-			${bus.company }
-			${bus.interval }
-			${bus.oneWay }
-			
-			${bus.serviceDate }
-			
-            
+<section class="notice container justify-center">
+  <div class="page-title text-center">
+        <div class="flex justify-between">
+        	<div><h3>${bus.busRoute }</h3></div>
+        	<div><h3>${bus.departure1 } ~ ${bus.departure2 }</h3></div>
+        	<div><h3>${bus.dayType }</h3></div>
         </div>
-    </div>
+        
+         <div class="flex justify-between">
+        	<div>운행사 : ${bus.company }</div>
+        	<div>배차간격 : ${bus.interval }</div>
+        	<div>편도 : ${bus.oneWay }</div>
+        </div>
+	</div>
+			
 </section>
 
-<section class="mt-8">
+<section class="mb-8">
 	<div class="flex justify-center">
 		<div class="table-box-type-1">
 			<table border="1">
@@ -96,6 +105,11 @@ table {
 							<td>${bustime.startingPoint10_2 }</td>
 						</tr>
 					</c:forEach>
+					<tr>
+						<td>시행일</td>
+						<td colspan="3">${bus.serviceDate }</td>
+						<td colspan="17">${bus.note }</td>
+					</tr>
 				</tbody>
 	
 			</table>
@@ -108,55 +122,15 @@ table {
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d23dfbb54da6b8556eb211bbec3d38fb"></script>
 
 <!-- 지도 영역 -->
-<div id="map" style="width:1000px; height:300px;"></div>
+<div class="flex justify-center mb-8">
+	<div id="map" style="width:1070px; height:400px;"></div>
+</div>
 
 <script>
-//버스 정류장 위치
-const API_KEY = 'eiQD4XKpClaaaS5Yhfgc%2BDN6XT5FJz5u6v%2BLikgsmIMQU773QzDwXMwYPXdhxJEICgsIa9Xgem%2BZk3x64GR6wQ%3D%3D';
-
-var Lalocation;
-var Lolocation;
-
-async function getData() {
-	const url = 'http://192.168.0.51/api/rest/busposinfo/getBusPosByRtid?busRouteId=30300001&serviceKey='
-			+ API_KEY;
-	const response = await fetch(url);
-	const data = await response.json();
-	
-	// TODO : 위도 경도 데이터 가져오기
-	Lalocation = data.body[0].latitude;
-	Lolocation = data.body[0].longitude;
-
-	console.log("data", data);
-}
-
-var apiKey = 'eiQD4XKpClaaaS5Yhfgc%2BDN6XT5FJz5u6v%2BLikgsmIMQU773QzDwXMwYPXdhxJEICgsIa9Xgem%2BZk3x64GR6wQ%3D%3D';
-var busRouteUrl = 'http://apis.data.go.kr/1613000/BusSttnInfoInqireService/getSttnNoList?serviceKey=eiQD4XKpClaaaS5Yhfgc%2BDN6XT5FJz5u6v%2BLikgsmIMQU773QzDwXMwYPXdhxJEICgsIa9Xgem%2BZk3x64GR6wQ%3D%3D'
-		+ '&cityCode=25&nodeNm=전통시장&nodeNo=44810&numOfRows=10&pageNo=1&_type=xml';
-
-
-
-// Ajax 요청을 통해 버스 노선 정보를 가져옵니다.
-$.ajax({
-  url: busRouteUrl,
-  type: 'GET',
-  data: {
-    busRouteId: '노선_아이디' // 대전 버스 노선의 고유 식별자
-  },
-  dataType: 'xml',
-  success: function(response) {
-    // 응답 데이터를 파싱하여 필요한 정보를 추출하고, 해당 정보를 HTML 페이지에 표시합니다.
-  },
-  error: function(error) {
-    console.log(error);
-  }
-});
-
-
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = { 
 		center: new kakao.maps.LatLng(36.3504119, 127.3845475), // 지도의 중심좌표 (대전시청)
-		level: 3 // 지도의 확대 레벨 
+		level: 3 // 지도의 확대 레벨
 	};
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
