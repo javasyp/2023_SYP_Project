@@ -24,48 +24,20 @@
 </section>
 
 	<!-- 지도 영역 -->
-	<div id="map" style="width:100%; height:500px;"></div>
-	<button id="trafficInform"><span id="tiText">교통 정보 표시</span></button>
-	<p>세부 구간의 상세한 실시간 교통정보를 바로 볼 수 있어요. 원활할 경우 초록, 서행일 경우 노랑, 지체일 경우 주황, 정체일 경우 빨강으로 나타나요.</p>
-	<p id="result"></p>
-	<div id="xml-container"></div>
+	<div id="map" style="width:1000px; height:500px;"></div>
 
 <script>
+	
 	// 카카오 지도
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
     		center: new kakao.maps.LatLng(36.3504119, 127.3845475), // 지도의 중심좌표 (대전시청)
-    		level: 2 // 지도의 확대 레벨 
+    		level: 3 // 지도의 확대 레벨 
 		};
 	
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	
-	// 지도에 마커와 인포윈도우를 표시하는 함수입니다
-	function displayMarker(locPosition, message) {
-
-	    // 마커를 생성합니다
-	    var marker = new kakao.maps.Marker({  
-	        map: map, 
-	        position: locPosition
-	    }); 
-	    
-	    var iwContent = message, // 인포윈도우에 표시할 내용
-	        iwRemoveable = true;
-
-	    // 인포윈도우를 생성합니다
-	    var infowindow = new kakao.maps.InfoWindow({
-	        content : iwContent,
-	        removable : iwRemoveable
-	    });
-	    
-	    // 인포윈도우를 마커위에 표시합니다 
-	    infowindow.open(map, marker);
-	    
-	 	// 지도 중심좌표를 접속위치로 변경합니다
-	    map.setCenter(locPosition);
-	}
-	
-	// 현재 위치 가져오기
+	// 현재 위치
 	function getLocation() {
 	    return new Promise((resolve, reject) => {
 	        if (navigator.geolocation) {
@@ -75,8 +47,8 @@
 	                    const lon = position.coords.longitude;
 	                    resolve({ lat, lon });
 	                    
-	                    locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-			            message = '<div style="padding:5px;">현재 나의 위치</div>'; // 인포윈도우에 표시될 내용입니다
+	                    var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+			            message = '<div style="padding:5px;">현재 위치 위도:' + lat + '경도: ' + lon + '</div>'; // 인포윈도우에 표시될 내용입니다
 			        
 				        // 마커와 인포윈도우를 표시합니다
 				        displayMarker(locPosition, message);
@@ -103,92 +75,41 @@
 		  url: url,
 		  type: 'GET',
 		  data: {
-			  numOfRows: '100',
+			  numOfRows: '20',
 			  pageNo: '1',
 			  _type: 'xml'
 		  },
 		  dataType: 'xml',
 		  success: function(response) {
-			console.log(response);
 		    // 응답 데이터를 파싱하여 필요한 정보를 추출하고, 해당 정보를 HTML 페이지에 표시합니다.
 		    // XML 응답 데이터를 파싱합니다.
-	        const xmlDoc = response;	// XML 문서 객체로 변환
+	        const xmlDoc = response;
 		    
 	    	// 필요한 정보를 추출하여 HTML 요소를 동적으로 생성하고 화면에 추가합니다.
 	        const items = xmlDoc.getElementsByTagName('item');
 	        const containerElement = document.getElementById('xml-container'); // HTML에 해당하는 컨테이너 요소를 선택합니다.
-			
-	        var positions = [];
-	        
+	
 	        for (let i = 0; i < items.length; i++) {
-	            item = items[i];
-	            cityCode = item.getElementsByTagName('citycode')[0].textContent;
-	            gpslati = item.getElementsByTagName('gpslati')[0].textContent;
-	            gpslong = item.getElementsByTagName('gpslong')[0].textContent;
-	            nodeid = item.getElementsByTagName('nodeid')[0].textContent;
-	            nodenm = item.getElementsByTagName('nodenm')[0].textContent;
-	            
-	         	// 필요한 정보를 가지고 HTML 요소를 동적으로 생성하고 화면에 추가합니다.
+	            const item = items[i];
+	            const cityCode = item.getElementsByTagName('citycode')[0].textContent;
+	            const gpslati = item.getElementsByTagName('gpslati')[0].textContent;
+	            const gpslong = item.getElementsByTagName('gpslong')[0].textContent;
+	            const nodeid = item.getElementsByTagName('nodeid')[0].textContent;
+	            const nodenm = item.getElementsByTagName('nodenm')[0].textContent;
+	            const nodeno = item.getElementsByTagName('nodeno')[0].textContent;
+
+	            // 필요한 정보를 가지고 HTML 요소를 동적으로 생성하고 화면에 추가합니다.
 	            const itemElement = document.createElement('div');
 	            itemElement.innerHTML = `
-	                <p>도시코드 : ` + cityCode + `</p>
-	                <p>위도 : ` + gpslati + `</p>
-	                <p>경도 : ` + gpslong + `</p>
-	                <p>정류소ID : ` + nodeid + `</p>
-	                <p>정류소명: ` + nodenm + `</p>
+	                <p>City Code: ${cityCode}</p>
+	                <p>GPS Latitude: ${gpslati}</p>
+	                <p>GPS Longitude: ${gpslong}</p>
+	                <p>Node ID: ${nodeid}</p>
+	                <p>Node Name: ${nodenm}</p>
+	                <p>Node No: ${nodeno}</p>
 	                <hr>
 	            `;
 	            containerElement.appendChild(itemElement);
-	            
-	            title = nodenm;
-	            latlng = new kakao.maps.LatLng(gpslati, gpslong);
-	            
-	         	// 마커를 표시할 위치와 title 객체 배열입니다
-	        	// 객체를 생성하고 배열에 추가
-	        	const position = {
-    			        title: title,
-    			        latlng: latlng
-    			};
-	         	
-	    		positions.push(position);
-	    		
-	    		// 현재 위치
-	    		var locPosition = new kakao.maps.LatLng(lat, lon);
-
-	        	// 마커 이미지의 이미지 주소입니다
-	        	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-	        	    
-	        	for (let j = 0; j < positions.length; j ++) {
-	        	    
-	        	    // 마커 이미지의 이미지 크기 입니다
-	        	    var imageSize = new kakao.maps.Size(24, 35); 
-	        	    
-	        	    // 마커 이미지를 생성합니다    
-	        	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-	        	    
-	        	    var message = '<div style="padding:5px;">' + positions[j].title + '</div>';
-	        	    
-	        	    // 마커를 생성합니다
-	        	    var marker = new kakao.maps.Marker({
-	        	        map: map, // 마커를 표시할 지도
-	        	        position: positions[j].latlng, // 마커를 표시할 위치
-	        	        title : positions[j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-	        	        image : markerImage // 마커 이미지 
-	        	    });
-	        	    
-	        	 	// 인포윈도우를 생성합니다
-	        	    var infowindow = new kakao.maps.InfoWindow({
-	        	        content : message
-	        	    });
-	        	    
-	        	    // 인포윈도우를 마커위에 표시합니다 
-	        	    infowindow.open(map, marker);
-	        	    
-	        	 	// 지도 중심좌표를 접속위치로 변경합니다
-	        	    map.panTo(locPosition);
-	        	}
-
-	            
 	        }
 		  },
 		  error: function(error) {
@@ -201,7 +122,7 @@
 	getLocation()
 	    .then((position) => {
 	        const { lat, lon } = position;
-	        console.log("위도 : ", lat, "경도 : ", lon);
+	        console.log("위도:", lat, "경도:", lon);
 		    // 위치 정보를 사용하여 API 호출
 		    return getBuses(lat, lon);
 	    })
@@ -209,9 +130,7 @@
 	        console.error("위치 정보를 가져오는 중 오류가 발생했습니다:", error);
 	    });
 	
-	
-	
-	// 마커를 표시할 위치와 title 객체 배열입니다
+	// 마커를 표시할 위치와 title 객체 배열입니다 
 	var positions = [
 	    {
 	        title: '카카오', 
@@ -251,7 +170,82 @@
 	    });
 	}
 	
+	// 현재 위치 가져오기
+	function getLocation1() {
+		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+		if (navigator.geolocation) {
+		    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+		    navigator.geolocation.getCurrentPosition(function(position) {
+		        
+		        lat = position.coords.latitude; // 위도
+		        lon = position.coords.longitude; // 경도
+		        
+		        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+		            message = '<div style="padding:5px;">현재 위치 위도:' + lat + '경도: ' + lon + '</div>'; // 인포윈도우에 표시될 내용입니다
+		        
+		        // 마커와 인포윈도우를 표시합니다
+		        displayMarker(locPosition, message);
+		      });
+		    
+		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+		    
+		    var locPosition = new kakao.maps.LatLng(36.3504119, 127.3845475),    
+		        message = '현재 위치를 알 수 없습니다.';
+		        
+		    displayMarker(locPosition, message);
+		}
+
+		// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+    	function displayMarker(locPosition, message) {
+
+    	    // 마커를 생성합니다
+    	    var marker = new kakao.maps.Marker({  
+    	        map: map, 
+    	        position: locPosition
+    	    }); 
+    	    
+    	    var iwContent = message, // 인포윈도우에 표시할 내용
+    	        iwRemoveable = true;
+
+    	    // 인포윈도우를 생성합니다
+    	    var infowindow = new kakao.maps.InfoWindow({
+    	        content : iwContent,
+    	        removable : iwRemoveable
+    	    });
+    	    
+    	    // 인포윈도우를 마커위에 표시합니다 
+    	    infowindow.open(map, marker);
+    	    
+    	    // 지도 중심좌표를 접속위치로 변경합니다
+    	    map.setCenter(locPosition);      
+    	}
+		
+	}
 	
+	// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+	function displayMarker(locPosition, message) {
+
+	    // 마커를 생성합니다
+	    var marker = new kakao.maps.Marker({  
+	        map: map, 
+	        position: locPosition
+	    }); 
+	    
+	    var iwContent = message, // 인포윈도우에 표시할 내용
+	        iwRemoveable = true;
+
+	    // 인포윈도우를 생성합니다
+	    var infowindow = new kakao.maps.InfoWindow({
+	        content : iwContent,
+	        removable : iwRemoveable
+	    });
+	    
+	    // 인포윈도우를 마커위에 표시합니다 
+	    infowindow.open(map, marker);
+	    
+	    // 지도 중심좌표를 접속위치로 변경합니다
+	    map.setCenter(locPosition);      
+	}
 	
 	// 지도 타입 변경 컨트롤을 생성한다
 	var mapTypeControl = new kakao.maps.MapTypeControl();
@@ -265,7 +259,25 @@
 	// 지도의 우측에 확대 축소 컨트롤을 추가한다
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	
+	// 교통 정보 표시 및 해제
+	var trafficInform = false;
+	const tiText = document.getElementById('tiText');
 	
+	$(document).on('click', '#result', function() {
+	    if (tiText.innerText === '교통 정보 표시') {
+	    	tiText.innerText = '교통 정보 해제';
+	    } else tiText.innerText = '교통 정보 표시';
+	    
+	    if (trafficInform == false) {
+	    	// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+			map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+			trafficInform = true;
+	    } else {
+	    	// 아래 코드는 위에서 추가한 교통정보 지도타입을 제거합니다
+	    	map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+	    	trafficInform = false;
+	    }
+	});
 	
 	// 지도에 클릭 이벤트를 등록합니다
 	// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -309,30 +321,13 @@
 	function zoomOut() {
 	    map.setLevel(map.getLevel() + 1);
 	}
+	
+	
 </script>
+	
 
-<script>
-//교통 정보 표시 및 해제
-var trafficInform = false;
-const tiText = document.getElementById('tiText');
-
-tiText.addEventListener("click", function() {
-    if (tiText.innerText === '교통 정보 표시') {
-    	tiText.innerText = '교통 정보 해제';
-    } else {
-    	tiText.innerText = '교통 정보 표시';
-    }
-    
-    if (trafficInform == false) {
-    	// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
-		map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-		trafficInform = true;
-    } else {
-    	// 아래 코드는 위에서 추가한 교통정보 지도타입을 제거합니다
-    	map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-    	trafficInform = false;
-    }
-});
-</script>
+	<button id="trafficInform()"><span id="tiText">교통 정보 표시</span></button>
+	<p id="result"></p>
+	<div id="xml-container"></div>
 	
 <%@ include file="../common/foot.jspf"%>
