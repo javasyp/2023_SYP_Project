@@ -36,7 +36,7 @@
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
     		center: new kakao.maps.LatLng(36.3504119, 127.3845475), // 지도의 중심좌표 (대전시청)
-    		level: 3 // 지도의 확대 레벨 
+    		level: 2 // 지도의 확대 레벨 
 		};
 	
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -190,7 +190,20 @@
 	        	    map.panTo(locPosition);
 	        	}
 
-	            
+	        	// 지도에 표시할 원을 생성합니다
+	        	var circle = new kakao.maps.Circle({
+	        		    center : new kakao.maps.LatLng(lat, lon),  // 원의 중심좌표 입니다 
+	        		    radius: 500, // 미터 단위의 원의 반지름입니다 
+	        		    strokeWeight: 3, // 선의 두께입니다 
+	        		    strokeColor: '#75B8FA', // 선의 색깔입니다
+	        		    strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+	        		    strokeStyle: 'dashed', // 선의 스타일 입니다
+	        		    fillColor: '#CFE7FF', // 채우기 색깔입니다
+	        		    fillOpacity: 0.05  // 채우기 불투명도 입니다   
+	        		});
+	        	
+	        	// 지도에 원을 표시합니다 
+	        	circle.setMap(map); 
 	        }
 		  },
 		  error: function(error) {
@@ -212,62 +225,42 @@
 	    });
 	
 	
-	
-	// 마커를 표시할 위치와 title 객체 배열입니다
-	var positions = [
-	    {
-	        title: '카카오', 
-	        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-	    },
-	    {
-	        title: '생태연못', 
-	        latlng: new kakao.maps.LatLng(33.450936, 126.569477)
-	    },
-	    {
-	        title: '텃밭', 
-	        latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-	    },
-	    {
-	        title: '근린공원',
-	        latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-	    }
-	];
-
-	// 마커 이미지의 이미지 주소입니다
-	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-	    
-	for (var i = 0; i < positions.length; i ++) {
-	    
-	    // 마커 이미지의 이미지 크기 입니다
-	    var imageSize = new kakao.maps.Size(24, 35); 
-	    
-	    // 마커 이미지를 생성합니다    
-	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-	    
-	    // 마커를 생성합니다
-	    var marker = new kakao.maps.Marker({
-	        map: map, // 마커를 표시할 지도
-	        position: positions[i].latlng, // 마커를 표시할 위치
-	        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-	        image : markerImage // 마커 이미지 
-	    });
-	}
-	
-	
-	
 	// 지도 타입 변경 컨트롤을 생성한다
 	var mapTypeControl = new kakao.maps.MapTypeControl();
 
 	// 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
-	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);	
-
+	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+	
+	// 지도타입 컨트롤의 지도 또는 스카이뷰 버튼을 클릭하면 호출되어 지도타입을 바꾸는 함수입니다
+	function setMapType(maptype) { 
+	    var roadmapControl = document.getElementById('btnRoadmap');
+	    var skyviewControl = document.getElementById('btnSkyview'); 
+	    if (maptype === 'roadmap') {
+	        map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);    
+	        roadmapControl.className = 'selected_btn';
+	        skyviewControl.className = 'btn';
+	    } else {
+	        map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);    
+	        skyviewControl.className = 'selected_btn';
+	        roadmapControl.className = 'btn';
+	    }
+	}
+	
 	// 지도에 확대 축소 컨트롤을 생성한다
 	var zoomControl = new kakao.maps.ZoomControl();
 
 	// 지도의 우측에 확대 축소 컨트롤을 추가한다
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-	
-	
+
+	// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+	function zoomIn() {
+	    map.setLevel(map.getLevel() - 1);
+	}
+
+	// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+	function zoomOut() {
+	    map.setLevel(map.getLevel() + 1);
+	}
 	
 	// 지도에 클릭 이벤트를 등록합니다
 	// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -286,31 +279,6 @@
 	    map.setCenter(latlng);
 	    
 	});
-	
-	// 지도타입 컨트롤의 지도 또는 스카이뷰 버튼을 클릭하면 호출되어 지도타입을 바꾸는 함수입니다
-	function setMapType(maptype) { 
-	    var roadmapControl = document.getElementById('btnRoadmap');
-	    var skyviewControl = document.getElementById('btnSkyview'); 
-	    if (maptype === 'roadmap') {
-	        map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);    
-	        roadmapControl.className = 'selected_btn';
-	        skyviewControl.className = 'btn';
-	    } else {
-	        map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);    
-	        skyviewControl.className = 'selected_btn';
-	        roadmapControl.className = 'btn';
-	    }
-	}
-
-	// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-	function zoomIn() {
-	    map.setLevel(map.getLevel() - 1);
-	}
-
-	// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-	function zoomOut() {
-	    map.setLevel(map.getLevel() + 1);
-	}
 </script>
 
 <script>
