@@ -2,6 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="MAP" />
 <%@ include file="../common/head.jspf"%>
+<style>
+.msg {
+	display: flex;
+	padding: 5px;
+	width: 100%;
+	font-size: 14px;
+}
+</style>
 
 <!-- 실제 지도를 그리는 Javascript API 및 API KEY -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d23dfbb54da6b8556eb211bbec3d38fb"></script>
@@ -66,6 +74,10 @@
 	    map.setCenter(locPosition);
 	}
 	
+	/* kakao.maps.event.addListener(marker, 'click', function(mouseEvent) {
+	    infowindow.open(map, marker);
+	}); */
+	
 	// 현재 위치 가져오기
 	function getLocation() {
 	    return new Promise((resolve, reject) => {
@@ -110,8 +122,7 @@
 		  },
 		  dataType: 'xml',
 		  success: function(response) {
-			console.log(response);
-		    // 응답 데이터를 파싱하여 필요한 정보를 추출하고, 해당 정보를 HTML 페이지에 표시합니다.
+			//console.log(response);
 		    // XML 응답 데이터를 파싱합니다.
 	        const xmlDoc = response;	// XML 문서 객체로 변환
 		    
@@ -168,7 +179,7 @@
 	        	    // 마커 이미지를 생성합니다    
 	        	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 	        	    
-	        	    var message = '<div style="padding:5px;">' + positions[j].title + '</div>';
+	        	    var message = '<div class="msg">' + positions[j].title + '</div>';
 	        	    
 	        	    // 마커를 생성합니다
 	        	    var marker = new kakao.maps.Marker({
