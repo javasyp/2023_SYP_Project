@@ -163,11 +163,11 @@ public class UsrBustimeController {
 	// 버스 시간표 목록
 	@RequestMapping("/usr/bus/list")
 	public String showBusList(Model model, @RequestParam(defaultValue="1") int page,
-			@RequestParam(defaultValue="busRoute,dayType") String searchType,
-			@RequestParam(defaultValue="") String searchKeyword) {
+			@RequestParam(defaultValue="") String busRoute,
+			@RequestParam(defaultValue="") String dayType) {
 		
 		// 시간표 총 개수
-		int bustimesCount = bustimeService.getBustimesCount(searchType, searchKeyword);
+		int bustimesCount = bustimeService.getBustimesCount(busRoute, dayType);
 		
 		// 페이징
 		int itemsInAPage = 15;		// 한 페이지에 나오는 글 개수
@@ -177,8 +177,11 @@ public class UsrBustimeController {
 		// 전체 페이지수
 		int pagesCount = (int) Math.ceil( bustimesCount / (double) itemsInAPage);
 		
+		// 노선 검색 (출력용)
+		List<Bustime> searchRoute = bustimeService.searchBusRoutes(busRoute);
+		
 		// 리스트로 저장
-		List<Bustime> bustimes = bustimeService.getForPrintBustimes(itemsInAPage, page, searchType, searchKeyword);
+		List<Bustime> bustimes = bustimeService.getForPrintBustimes(itemsInAPage, page, busRoute, dayType);
 		
 		// 현재 페이지가 범위를 벗어나지 않도록 처리
 	    if (page < 1) {
@@ -188,8 +191,9 @@ public class UsrBustimeController {
 	    }
 		
 		// usr/bus/list.jsp로 값 전달
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchKeyword", searchKeyword);
+	    model.addAttribute("searchRoute", searchRoute);
+		model.addAttribute("busRoute", busRoute);
+		model.addAttribute("dayType", dayType);
 		model.addAttribute("page", page);
 		model.addAttribute("pagesCount", pagesCount);
 		model.addAttribute("bustimesCount", bustimesCount);

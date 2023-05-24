@@ -153,7 +153,7 @@ var polyline = new kakao.maps.Polyline({
 });
 
 // 지도에 선을 표시합니다 
-polyline.setMap(map);  
+polyline.setMap(map);
 
 </script>
 

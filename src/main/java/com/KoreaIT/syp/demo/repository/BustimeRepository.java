@@ -10,32 +10,50 @@ import com.KoreaIT.syp.demo.vo.Bustime;
 @Mapper
 public interface BustimeRepository {
 	
-	// 목록, 검색어 있을 경우
+	// 목록, 검색
 	@Select("""
 			<script>
 				SELECT *
 				FROM busSchedule
 				WHERE line = ''
-				<if test="searchKeyword != ''">
-					<choose>
-						<when test="searchType == 'busRoute'">
-							AND busRoute LIKE CONCAT('%',#{searchKeyword},'%')
-						</when>
-						<when test="searchType == 'dayType'">
-							AND dayType LIKE CONCAT('%',#{searchKeyword},'%')
-						</when>
-						<otherwise>
-							AND busRoute LIKE CONCAT('%',#{searchKeyword},'%')
-							OR dayType LIKE CONCAT('%',#{searchKeyword},'%')
-						</otherwise>
-					</choose>
+				<if test="busRoute != ''">
+					AND busRoute = #{busRoute}
+				</if>
+				<if test="dayType != ''">
+					AND dayType = #{dayType}
 				</if>
 				<if test="limitFrom >= 0">
 					LIMIT #{limitFrom}, #{limitTake}
 				</if>
 			</script>
 			""")
-	public List<Bustime> getForPrintBustimes(int limitFrom, int limitTake, String searchType, String searchKeyword);
+	public List<Bustime> getForPrintBustimes(int limitFrom, int limitTake, String busRoute, String dayType);
+	
+//	@Select("""
+//			<script>
+//				SELECT *
+//				FROM busSchedule
+//				WHERE line = ''
+//				<if test="busRoute != ''">
+//					<choose>
+//						<when test="busRoute == 'busRoute'">
+//							AND busRoute LIKE CONCAT('%',#{busRoute},'%')
+//						</when>
+//						<when test="dayType == 'dayType'">
+//							AND dayType LIKE CONCAT('%',#{dayType},'%')
+//						</when>
+//						<otherwise>
+//							AND busRoute LIKE CONCAT('%',#{busRoute},'%')
+//							OR dayType LIKE CONCAT('%',#{dayType},'%')
+//						</otherwise>
+//					</choose>
+//				</if>
+//				<if test="limitFrom >= 0">
+//					LIMIT #{limitFrom}, #{limitTake}
+//				</if>
+//			</script>
+//			""")
+//	public List<Bustime> getForPrintBustimes(int limitFrom, int limitTake, String busRoute, String dayType);
 	
 	// 시간표 개수
 	@Select("""
@@ -43,23 +61,15 @@ public interface BustimeRepository {
 				SELECT COUNT(*) AS cnt
 				FROM busSchedule
 				WHERE line = ''
-				<if test="searchKeyword != ''">
-					<choose>
-						<when test="searchType == 'busRoute'">
-							AND busRoute LIKE CONCAT('%',#{searchKeyword},'%')
-						</when>
-						<when test="searchType == 'dayType'">
-							AND dayType LIKE CONCAT('%',#{searchKeyword},'%')
-						</when>
-						<otherwise>
-							AND busRoute LIKE CONCAT('%',#{searchKeyword},'%')
-							OR dayType LIKE CONCAT('%',#{searchKeyword},'%')
-						</otherwise>
-					</choose>
+				<if test="busRoute != ''">
+					AND busRoute = #{busRoute}
+				</if>
+				<if test="dayType != ''">
+					AND dayType = #{dayType}
 				</if>
 			</script>
 			""")
-	public int getBustimesCount(String searchType, String searchKeyword);
+	public int getBustimesCount(String busRoute, String dayType);
 	
 	// 상세보기 (시간표만)
 	@Select("""
@@ -83,6 +93,10 @@ public interface BustimeRepository {
 			</script>
 			""")
 	public Bustime getForPrintBus(String busRoute, String dayType);
+	
+	// 노선 검색
+	@Select("SELECT DISTINCT busRoute FROM busSchedule WHERE line = '';")
+	public List<Bustime> searchBusRoutes(String busRoute);
 
 //	// 조회수 증가
 //	@Update("""

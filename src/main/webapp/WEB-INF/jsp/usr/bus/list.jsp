@@ -232,9 +232,65 @@ section.notice {
 </style>
 
 <script>
-function clearSearch() {
-    document.querySelector('input[name="searchKeyword"]').value = '';
-    document.querySelector('form').submit();
+$('#step1').on("change", function() {
+	loadArea('busRoute', $(this));
+});
+
+$('#step2').on("change", function() {
+	loadArea('busType', $(this));
+});
+
+function loadArea(type, element) {
+	var value = $(element).find('option:selected').text();
+	var data = {
+		type : type,
+		keyword : value
+	};
+
+	console.log(data);
+	$.ajax({
+		url : "/usr/bus/list",
+		data : data,
+		dataType : "JSON",
+		method : "POST",
+		success : function(result) {
+			if (type == 'busRoute') {
+				result.forEach(function(searchRoute) {
+					$('#step1').append(
+							'<option value="' + searchRoute.areacode + '">'
+									+ searchRoute.step1 + '</option>')
+				});
+			} else if (type == 'busType') {
+				$('#busRoute').siblings().remove();
+				$('#town').siblings().remove();
+				res.forEach(function(county) {
+					$('#step2').append(
+							'<option value="'+county.areacode+'">'
+									+ county.step2 + '</option>')
+				});
+			} else {
+				$('#town').siblings().remove();
+				res.forEach(function(town) {
+					$('#step3').append(
+							'<option value="'+town.areacode+'">'
+									+ town.step3 + '</option>')
+				});
+			}
+		},
+		error : function(xhr) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function updateSecondSelect() {
+    var firstSelect = document.getElementById('firstSelect');
+    var secondSelect = document.getElementById('secondSelect');
+    var selectedValue = firstSelect.value;
+
+    // AJAX를 통해 서버에 선택된 값에 따른 두 번째 셀렉트 박스의 옵션을 요청
+    // 서버에서 JSON 형태로 옵션 데이터를 반환하고, 해당 데이터를 기반으로 두 번째 셀렉트 박스를 업데이트
+    // 이 과정은 JavaScript의 fetch() 함수나 jQuery의 AJAX 메소드 등을 사용하여 구현 가능
 }
 </script>
 
@@ -251,13 +307,19 @@ function clearSearch() {
             <div class="search-window">
                 <form action="">
                     <div class="search-wrap">
-                    	<select data-value="${param.searchType }" name="searchType">
-							<option value="busRoute">노선번호</option>
-						    <option value="dayType">운행일</option>
-						    <option value="busRoute,dayType">전체</option>
+                    	<select data-value="${param.busRoute }" name="busRoute">
+                    		<option value="" selected>노선번호</option>
+                    		<c:forEach var="searchRoute" items="${searchRoute }" varStatus="status">
+								<option value="${searchRoute.busRoute }">${searchRoute.busRoute }</option>
+							</c:forEach>
 						</select>
-						<input value="${param.searchKeyword }" maxlength="20" name="searchKeyword"
-							type="text" placeholder="검색어를 입력하세요">
+						<select data-value="${param.dayType }" name="dayType">
+							<option value="" selected>운행일</option>
+							<option value="평일">평일</option>
+							<option value="휴,토">휴,토</option>
+							<option value="토요일" >토요일</option>
+							<option value="ALL">ALL</option>
+						</select>
 						<button type="submit" class="btn btn-dark">🔍︎</button>
                     </div>
                 </form>
@@ -315,8 +377,8 @@ function clearSearch() {
 			</c:if>
             
 			<!-- 변수 지정 -->
-			<c:set var="baseUri" value="?searchType=${searchType }" />
-			<c:set var="baseUri" value="${baseUri }&searchKeyword=${searchKeyword }" />
+			<c:set var="baseUri" value="?busRoute=${busRoute }" />
+			<c:set var="baseUri" value="${baseUri }&busType=${busType }" />
 			
 			<!-- 페이지네이션 블록 크기 -->
 			<c:set var="blockSize" value="5" />

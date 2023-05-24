@@ -23,11 +23,11 @@ public class BustimeService {
 	}
 	
 	// 버스 시간표 목록
-	public List<Bustime> getForPrintBustimes(int itemsInAPage, int page, String searchType, String searchKeyword) {
+	public List<Bustime> getForPrintBustimes(int itemsInAPage, int page, String busRoute, String dayType) {
 		int limitFrom = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 		
-		return bustimeRepository.getForPrintBustimes(limitFrom, limitTake, searchType, searchKeyword);
+		return bustimeRepository.getForPrintBustimes(limitFrom, limitTake, busRoute, dayType);
 	}
 	
 	// 버스 시간표 개수
@@ -49,6 +49,13 @@ public class BustimeService {
 		Bustime bus = bustimeRepository.getForPrintBus(busRoute, dayType);
 		
 		return bus;
+	}
+	
+	// 검색
+	public List<Bustime> searchBusRoutes(String busRoute) {
+		List<Bustime> searchBus = bustimeRepository.searchBusRoutes(busRoute);
+		
+		return searchBus;
 	}
 	
 //	// 게시물 조회수 증가시키기
