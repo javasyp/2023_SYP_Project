@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS SYP_Project;
 CREATE DATABASE SYP_Project;
 USE SYP_Project;
 
-# 버스타임테이블 생성
+# 버스스케줄 테이블 생성
 CREATE TABLE busSchedule(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     busRoute CHAR(20) COMMENT '노선번호', 
@@ -38,6 +38,26 @@ CREATE TABLE busSchedule(
     note TEXT COMMENT '비고'
 );
 
+# 회원 테이블 생성
+CREATE TABLE `member`(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    loginId CHAR(20) NOT NULL,
+    loginPw CHAR(100) NOT NULL,
+    `authLevel` SMALLINT(2) UNSIGNED DEFAULT 3 COMMENT '권한 레벨 (3=일반, 7=관리자)',
+    nickname CHAR(20) NOT NULL,
+    email CHAR(50) NOT NULL,
+    delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴 여부 (0=탈퇴 전, 1=탈퇴 후)',
+    delDate DATETIME COMMENT '탈퇴 날짜'
+);
+
+#############################################################
+
 SELECT * FROM busSchedule;
 
-SELECT * FROM busSchedule WHERE busRoute = '101번' AND dayType = '토요일';
+SELECT DISTINCT busRoute FROM busSchedule WHERE line = '';
+
+SELECT DISTINCT busRoute, dayType FROM busSchedule WHERE line = '';
+
+SELECT * FROM busSchedule WHERE line = '';

@@ -20,8 +20,10 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.KoreaIT.syp.demo.service.BustimeService;
 import com.KoreaIT.syp.demo.util.Ut;
@@ -159,6 +161,15 @@ public class UsrBustimeController {
         // index.html 뷰 렌더링
         return "usr/bus/bustime";
 	}
+	
+	@GetMapping("/getData")
+	  public @ResponseBody List<Bustime> getData(String busRoute) {
+	    // 데이터베이스에서 필요한 값 조회
+		// 노선 검색 (출력용)
+		List<Bustime> searchRoute = bustimeService.searchBusRoutes(busRoute);
+	    return searchRoute;
+	}
+	
 	
 	// 버스 시간표 목록
 	@RequestMapping("/usr/bus/list")

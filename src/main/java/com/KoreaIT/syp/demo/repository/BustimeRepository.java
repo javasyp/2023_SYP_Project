@@ -97,6 +97,7 @@ public interface BustimeRepository {
 	// 노선 검색
 	@Select("SELECT DISTINCT busRoute FROM busSchedule WHERE line = '';")
 	public List<Bustime> searchBusRoutes(String busRoute);
+	
 
 //	// 조회수 증가
 //	@Update("""
